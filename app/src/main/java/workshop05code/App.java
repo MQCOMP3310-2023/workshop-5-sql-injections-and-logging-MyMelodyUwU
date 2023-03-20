@@ -74,20 +74,42 @@ public class App {
             String guess = scanner.nextLine();
 
             while (!guess.equals("q")) {
-                System.out.println("You've guessed '" + guess+"'.");
+                if(!isValidGuess(guess)){
+                    System.out.println("'" + guess + "' is not an acceptable input. Please enter a 4-letter word consisting only of lowercase letters a-z."); 
+                    System.out.print("Enter a 4 letter word for a guess or q to quit: ");
+                    guess = scanner.nextLine();
+                } else {
+                    System.out.println("You've guessed '" + guess+"'.");
 
-                if (wordleDatabaseConnection.isValidWord(guess)) { 
-                    System.out.println("Success! It is in the the list.\n");
-                }else{
-                    System.out.println("Sorry. This word is NOT in the the list.\n");
+                    if (wordleDatabaseConnection.isValidWord(guess)) { 
+                        System.out.println("Success! It is in the the list.\n");
+                    }else{
+                        System.out.println("Sorry. This word is NOT in the the list.\n");
+                    }
+
+                    System.out.print("Enter a 4 letter word for a guess or q to quit: " );
+                    guess = scanner.nextLine();
                 }
-
-                System.out.print("Enter a 4 letter word for a guess or q to quit: " );
-                guess = scanner.nextLine();
             }
         } catch (NoSuchElementException | IllegalStateException e) {
             e.printStackTrace();
         }
 
+        
+
+    }
+    public static boolean isValidGuess(String guess) {
+        if (guess.length() != 4) {
+            return false;
+        }
+
+        for (int i = 0; i < guess.length(); i++) {
+            char c = guess.charAt(i);
+            if (c < 'a' || c > 'z') {
+                return false;
+            }
+        }
+
+            return true;
     }
 }
